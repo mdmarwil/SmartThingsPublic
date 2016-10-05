@@ -17,7 +17,7 @@ import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 
 
 metadata {
-	definition (name: "SmartSense Moisture Sensor",namespace: "smartthings", author: "SmartThings", category: "C2") {
+	definition (name: "SmartSense Moisture Sensor",namespace: "smartthings", author: "SmartThings") {
 		capability "Configuration"
 		capability "Battery"
 		capability "Refresh"
@@ -293,7 +293,7 @@ def refresh() {
 
 def configure() {
 	// Device-Watch allows 2 check-in misses from device
-	sendEvent(name: "checkInterval", value: 60 * 12, displayed: false, data: [protocol: "zigbee"])
+	sendEvent(name: "checkInterval", value: 60 * 12, displayed: false, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID])
 
 	String zigbeeEui = swapEndianHex(device.hub.zigbeeEui)
 	log.debug "Configuring Reporting, IAS CIE, and Bindings."

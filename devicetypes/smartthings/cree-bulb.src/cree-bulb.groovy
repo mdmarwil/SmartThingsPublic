@@ -97,16 +97,17 @@ def refresh() {
 }
 
 def healthPoll() {
+    log.debug "healthPoll()"
     def cmds = zigbee.onOffRefresh() + zigbee.levelRefresh()
     cmds.each{ sendHubCommand(new physicalgraph.device.HubAction(it))}
 }
 
 def configure() {
     unschedule()
-    schedule("0 0/5 * * * ? *", "healthPoll")
+    runEvery5Minutes("healthPoll")
     log.debug "Configuring Reporting and Bindings."
     // Device-Watch allows 2 check-in misses from device
-    sendEvent(name: "checkInterval", value: 60 * 12, displayed: false, data: [protocol: "zigbee"])
+    sendEvent(name: "checkInterval", value: 60 * 12, displayed: false, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID])
     // minReportTime 0 seconds, maxReportTime 5 min. Reporting interval if no activity
     zigbee.onOffConfig(0, 300) + zigbee.levelConfig() + zigbee.onOffRefresh() + zigbee.levelRefresh()
 }

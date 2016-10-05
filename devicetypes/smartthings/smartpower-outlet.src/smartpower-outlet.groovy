@@ -16,7 +16,7 @@
 
 metadata {
 	// Automatically generated. Make future change here.
-	definition (name: "SmartPower Outlet", namespace: "smartthings", author: "SmartThings", category: "C1") {
+	definition (name: "SmartPower Outlet", namespace: "smartthings", author: "SmartThings") {
 		capability "Actuator"
 		capability "Switch"
 		capability "Power Meter"
@@ -129,7 +129,7 @@ def refresh() {
 
 def configure() {
 	// Device-Watch allows 2 check-in misses from device
-	sendEvent(name: "checkInterval", value: 60 * 12, displayed: false, data: [protocol: "zigbee"])
+	sendEvent(name: "checkInterval", value: 60 * 12, displayed: false, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID])
 	// OnOff minReportTime 0 seconds, maxReportTime 5 min. Reporting interval if no activity
 	zigbee.onOffConfig(0, 300) + powerConfig() + refresh()
 }
